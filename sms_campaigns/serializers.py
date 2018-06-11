@@ -1,44 +1,33 @@
 from rest_framework import serializers
-from phonebook import Contacts
-from campaign import Campaign
+from models import Phonebook, Campaign, Contacts, SMSReports
 
 
-class ContactSerializer(serializers.Serializer):
-    phonebook_id = serializers.IntegerField()
-    contact_name = serializers.CharField()
-    contact_number = serializers.IntegerField()
+class ContactSerializer(serializers.ModelSerializer):
 
-    def create(self, validated_data):
-        return Contacts(phonebook_id=None, **validated_data)
-
-    def update(self, instance, validated_data):
-        for field, value in validated_data.items():
-            setattr(instance, field, value)
-        return instance
+    class Meta:
+        model = Contacts
+        queryset = Contacts.objects.all()
+        fields = '__all__'
 
 
-class CampaignSerializer(serializers.Serializer):
-    campaign_id = serializers.IntegerField()
-    campaign_name = serializers.CharField()
-    user_id = serializers.IntegerField()
-    type = serializers.CharField()
-    phonebook_id = serializers.IntegerField()
-    message = serializers.CharField()
-
-    def create(self, validated_data):
-        return Campaign(**validated_data)
-
-    def update(self, instance, validated_data):
-        for field, value in validated_data.items():
-            setattr(instance, field, value)
-        return instance
+class CampaignSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Campaign
+        queryset = Campaign.objects.all()
+        fields = '__all__'
 
 
-# class SMSReportSerializer(serializers.Serializer):
-#     campaign_id = serializers.IntegerField()
-#     contact_number = serializers.IntegerField()
-#     status = serializers.CharField()
-#     message_uuid = serializers.CharField()
-#
-#     def create(self, validated_data):
-#         return
+class PhonebookSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Phonebook
+        queryset = Phonebook.objects.all()
+        fields = '__all__'
+
+
+class SMSReportSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SMSReports
+        queryset = SMSReports.objects.all()
+        fields = '__all__'
